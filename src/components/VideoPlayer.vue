@@ -6,8 +6,14 @@ const isPlaying = ref(false)
 const currentTime = ref(0)
 const duration = ref(0)
 const volume = ref(1)
-const showControls = ref(true)
+const showControls = ref(false)
 let hideControlsTimeout: ReturnType<typeof setTimeout> | null = null
+
+const formatTime = (time: number) => {
+  const minutes = Math.floor(time / 60)
+  const seconds = Math.floor(time % 60)
+  return `${minutes}:${seconds.toString().padStart(2, '0')}`
+}
 
 const togglePlay = () => {
   if (!videoRef.value) return
@@ -18,7 +24,6 @@ const togglePlay = () => {
     videoRef.value.pause()
     isPlaying.value = false
   }
-  resetControlsTimeout()
 }
 
 const updateTime = () => {
@@ -30,7 +35,6 @@ const changeTime = (event: Event) => {
   if (!videoRef.value) return
   const input = event.target as HTMLInputElement
   videoRef.value.currentTime = Number(input.value)
-  resetControlsTimeout()
 }
 
 const changeVolume = (event: Event) => {
@@ -38,36 +42,37 @@ const changeVolume = (event: Event) => {
   const input = event.target as HTMLInputElement
   videoRef.value.volume = Number(input.value)
   volume.value = videoRef.value.volume
-  resetControlsTimeout()
 }
 
-const resetControlsTimeout = () => {
+const handleMouseEnter = () => {
   showControls.value = true
   if (hideControlsTimeout) clearTimeout(hideControlsTimeout)
+}
+
+const handleMouseLeave = () => {
   hideControlsTimeout = setTimeout(() => {
     showControls.value = false
   }, 1000)
 }
 
-const handleMouseMove = () => {
-  resetControlsTimeout()
-}
-
 onMounted(() => {
   if (!videoRef.value) return
-  duration.value = videoRef.value.duration
-  resetControlsTimeout()
-  window.addEventListener('mousemove', handleMouseMove)
+  videoRef.value.onloadedmetadata = () => {
+    duration.value = videoRef.value?.duration ?? 0
+  }
 })
 
 onUnmounted(() => {
   if (hideControlsTimeout) clearTimeout(hideControlsTimeout)
-  window.removeEventListener('mousemove', handleMouseMove)
 })
 </script>
 
 <template>
-  <div class="relative max-w-full max-h-screen overflow-hidden group rounded-lg cursor-pointer">
+  <div
+    class="relative max-w-full max-h-screen overflow-hidden group rounded-lg cursor-pointer"
+    @mouseenter="handleMouseEnter"
+    @mouseleave="handleMouseLeave"
+  >
     <video
       ref="videoRef"
       src="../assets/1.mp4"
@@ -92,8 +97,11 @@ onUnmounted(() => {
         :max="duration"
         :value="currentTime"
         @input="changeTime"
-        class="w-full h-2 bg-gray-600 rounded-lg appearance-none cursor-pointer"
+        class="absolute top-0 left-0 w-full h-1 bg-gray-600 appearance-none cursor-pointer"
       />
+      <span class="text-white text-sm">
+        {{ formatTime(currentTime) }} / {{ formatTime(duration) }}
+      </span>
 
       <input
         type="range"
