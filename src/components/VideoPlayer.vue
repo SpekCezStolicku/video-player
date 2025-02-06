@@ -69,7 +69,7 @@ onUnmounted(() => {
 
 <template>
   <div
-    class="relative max-w-full max-h-screen overflow-hidden group rounded-lg cursor-pointer"
+    class="relative max-w-full max-h-screen overflow-hidden group rounded-lg cursor-pointer shadow-lg"
     @mouseenter="handleMouseEnter"
     @mouseleave="handleMouseLeave"
     @click="togglePlay"
