@@ -72,6 +72,7 @@ onUnmounted(() => {
     class="relative max-w-full max-h-screen overflow-hidden group rounded-lg cursor-pointer"
     @mouseenter="handleMouseEnter"
     @mouseleave="handleMouseLeave"
+    @click="togglePlay"
   >
     <video
       ref="videoRef"
@@ -80,14 +81,14 @@ onUnmounted(() => {
       class="w-full h-[500px] max-h-[100vh] object-contain"
     ></video>
 
-    <!-- OVLÁDACÍ PANEL -->
+    <!-- CONTROL PANEL -->
     <div
-      class="absolute bottom-0 left-0 w-full bg-gray-900/80 p-4 flex items-center gap-4 transition-opacity duration-500 rounded-lg"
+      class="absolute bottom-0 left-0 w-full bg-gray-900/40 p-4 flex items-center gap-4 transition-opacity duration-500 rounded-lg"
       :class="showControls ? 'opacity-100' : 'opacity-0'"
     >
       <button
         @click="togglePlay"
-        class="text-white text-xl p-2 rounded-lg bg-gray-700 hover:bg-gray-600 transition"
+        class="text-white text-md p-1 rounded-lg bg-gray-700 hover:bg-gray-600 transition"
       >
         {{ isPlaying ? '⏸' : '▶' }}
       </button>
