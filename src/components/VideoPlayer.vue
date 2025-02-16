@@ -11,6 +11,15 @@ const tooltipVisible = ref(false)
 const tooltipX = ref(0)
 let hideControlsTimeout: ReturnType<typeof setTimeout> | null = null
 
+const toggleFullscreen = () => {
+  if (!videoRef.value) return
+  if (!document.fullscreenElement) {
+    videoRef.value.requestFullscreen()
+  } else {
+    document.exitFullscreen()
+  }
+}
+
 const formatTime = (time: number) => {
   const minutes = Math.floor(time / 60)
   const seconds = Math.floor(time % 60)
@@ -81,7 +90,7 @@ const hideTooltip = () => {
 
 <template>
   <div
-    class="relative max-w-full max-h-screen overflow-hidden group rounded-lg shadow-lg"
+    class="relative max-w-full max-h-screen overflow-hidden rounded-lg shadow-lg group"
     @mouseenter="handleMouseEnter"
     @mouseleave="handleMouseLeave"
   >
@@ -95,12 +104,12 @@ const hideTooltip = () => {
 
     <!-- CONTROL PANEL -->
     <div
-      class="absolute bottom-0 left-0 w-full bg-gray-900/10 p-4 flex items-center gap-4 transition-opacity duration-500 rounded-lg"
+      class="absolute bottom-0 left-0 flex items-center w-full gap-4 p-4 transition-opacity duration-500 rounded-lg bg-gray-900/10"
       :class="showControls ? 'opacity-100' : 'opacity-0'"
     >
       <button
         @click="togglePlay"
-        class="text-white text-md p-1 rounded-lg bg-green-700 hover:bg-green-600 transition cursor-pointer"
+        class="p-1 text-white transition bg-green-700 rounded-lg cursor-pointer text-md hover:bg-green-600"
       >
         <img class="w-4" :src="isPlaying ? 'pause.svg' : 'play.svg'" alt="play" />
       </button>
@@ -112,7 +121,7 @@ const hideTooltip = () => {
         @input="changeTime"
         class="absolute top-0 left-0 w-full h-1 bg-green-600 appearance-none cursor-pointer"
       />
-      <span class="text-white text-xs font-semibold">
+      <span class="text-xs font-semibold text-white">
         {{ formatTime(currentTime) }} / {{ formatTime(duration) }}
       </span>
 
@@ -129,6 +138,7 @@ const hideTooltip = () => {
           @mouseleave="hideTooltip"
           ref="slider"
         />
+
         <!-- Tooltip -->
         <div
           v-if="tooltipVisible"
@@ -138,6 +148,14 @@ const hideTooltip = () => {
           {{ Math.floor(volume * 100) }}
         </div>
       </div>
+
+      <!-- Fullscreen -->
+      <button
+        @click="toggleFullscreen"
+        class="p-1 text-white transition bg-gray-700 rounded-lg cursor-pointer text-md hover:bg-gray-600"
+      >
+        <img class="w-4" src="/screen.svg" alt="fullscreen" />
+      </button>
     </div>
   </div>
 </template>
