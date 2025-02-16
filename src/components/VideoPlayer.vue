@@ -109,7 +109,7 @@ const hideTooltip = () => {
     >
       <button
         @click="togglePlay"
-        class="p-1 text-white transition bg-green-700 rounded-lg cursor-pointer text-md hover:bg-green-600"
+        class="p-1 transition rounded-lg cursor-pointer text-sky-50 bg-sky-50 text-md hover:bg-sky-100"
       >
         <img class="w-4" :src="isPlaying ? 'pause.svg' : 'play.svg'" alt="play" />
       </button>
@@ -119,9 +119,9 @@ const hideTooltip = () => {
         :max="duration"
         :value="currentTime"
         @input="changeTime"
-        class="absolute top-0 left-0 w-full h-1 bg-green-600 appearance-none cursor-pointer"
+        class="absolute top-0 left-0 w-full h-1 appearance-none cursor-pointer bg-sky-50 [&::-webkit-slider-runnable-track]:w-full [&::-webkit-slider-runnable-track]:h-1 [&::-webkit-slider-runnable-track]:bg-sky-50 [&::-webkit-slider-runnable-track]:rounded-full [&::-webkit-slider-thumb]:appearance-none [&::-webkit-slider-thumb]:w-3 [&::-webkit-slider-thumb]:h-3 [&::-webkit-slider-thumb]:bg-[#222222] [&::-webkit-slider-thumb]:rounded-full [&::-webkit-slider-thumb]:translate-y-[-3px] [&::-moz-range-track]:w-full [&::-moz-range-track]:h-1 [&::-moz-range-track]:bg-sky-50 [&::-moz-range-track]:rounded-full [&::-moz-range-thumb]:w-3 [&::-moz-range-thumb]:h-3 [&::-moz-range-thumb]:bg-[#222222] [&::-moz-range-thumb]:rounded-full [&::-moz-range-thumb]:translate-y-[-1px]"
       />
-      <span class="text-xs font-semibold text-white">
+      <span class="text-xs font-semibold text-stone-50">
         {{ formatTime(currentTime) }} / {{ formatTime(duration) }}
       </span>
 
@@ -133,7 +133,7 @@ const hideTooltip = () => {
           step="0.01"
           :value="volume"
           @input="changeVolume"
-          class="w-24 appearance-none cursor-pointer [&::-webkit-slider-runnable-track]:w-full [&::-webkit-slider-runnable-track]:h-1 [&::-webkit-slider-runnable-track]:bg-white [&::-webkit-slider-runnable-track]:rounded-full [&::-webkit-slider-thumb]:appearance-none [&::-webkit-slider-thumb]:w-3 [&::-webkit-slider-thumb]:h-3 [&::-webkit-slider-thumb]:bg-[#222222] [&::-webkit-slider-thumb]:rounded-full [&::-webkit-slider-thumb]:translate-y-[-3px] [&::-moz-range-track]:w-full [&::-moz-range-track]:h-1 [&::-moz-range-track]:bg-white [&::-moz-range-track]:rounded-full [&::-moz-range-thumb]:w-3 [&::-moz-range-thumb]:h-3 [&::-moz-range-thumb]:bg-[#222222] [&::-moz-range-thumb]:rounded-full [&::-moz-range-thumb]:translate-y-[-1px]"
+          class="w-20 appearance-none cursor-pointer [&::-webkit-slider-runnable-track]:w-full [&::-webkit-slider-runnable-track]:h-1 [&::-webkit-slider-runnable-track]:bg-sky-50 [&::-webkit-slider-runnable-track]:rounded-full [&::-webkit-slider-thumb]:appearance-none [&::-webkit-slider-thumb]:w-3 [&::-webkit-slider-thumb]:h-3 [&::-webkit-slider-thumb]:bg-[#222222] [&::-webkit-slider-thumb]:rounded-full [&::-webkit-slider-thumb]:translate-y-[-3px] [&::-moz-range-track]:w-full [&::-moz-range-track]:h-1 [&::-moz-range-track]:bg-sky-50 [&::-moz-range-track]:rounded-full [&::-moz-range-thumb]:w-3 [&::-moz-range-thumb]:h-3 [&::-moz-range-thumb]:bg-[#222222] [&::-moz-range-thumb]:rounded-full [&::-moz-range-thumb]:translate-y-[-1px]"
           @mousemove="showTooltip"
           @mouseleave="hideTooltip"
           ref="slider"
@@ -143,18 +143,15 @@ const hideTooltip = () => {
         <div
           v-if="tooltipVisible"
           :style="{ left: tooltipX + 'px' }"
-          class="absolute top-[-30px] px-2 py-1 text-xs text-white bg-black rounded-xl"
+          class="absolute top-[-30px] px-2 py-1 text-xs text-stone-50 bg-black rounded-xl"
         >
-          {{ Math.floor(volume * 100) }}
+          {{ `Vol ` + Math.floor(volume * 100) }}
         </div>
       </div>
 
       <!-- Fullscreen -->
-      <button
-        @click="toggleFullscreen"
-        class="p-1 text-white transition bg-gray-700 rounded-lg cursor-pointer text-md hover:bg-gray-600"
-      >
-        <img class="w-4" src="/screen.svg" alt="fullscreen" />
+      <button @click="toggleFullscreen" class="p-1 transition rounded-lg cursor-pointer text-md">
+        <img class="w-5" src="/screen.svg" alt="fullscreen" />
       </button>
     </div>
   </div>
